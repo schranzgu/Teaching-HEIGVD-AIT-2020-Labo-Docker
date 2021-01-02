@@ -1,0 +1,21 @@
+Task 0
+Question M1-M6
+Question 0.1
+
+
+Task 1
+Question 1.2
+Pas de difficulté particulière, nous connaissions déjà plus ou moins les manipulaitions à effectuer
+L'idée était d'installer S6 afin de pouvoir gérer plusoeurs process au sein d'un même conteneur sans poser de problème (arrêt par exemple)
+
+
+Task 2
+
+
+Task 3
+
+Task 4
+
+Task 5
+
+Task 6

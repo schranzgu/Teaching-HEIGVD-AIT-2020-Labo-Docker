@@ -1,0 +1,37 @@
+PS C:\Users\guill\OneDrive\HEIG\2021\AIT\Labo\Labo05_Docker\Teaching-HEIGVD-AIT-2020-Labo-Docker\ha> docker logs ha
+[s6-init] making user provided files available at /var/run/s6/etc...exited 0.
+[s6-init] ensuring user provided files have correct perms...exited 0.
+[fix-attrs.d] applying ownership & permissions fixes...
+[fix-attrs.d] done.
+[cont-init.d] executing container initialization scripts...
+[cont-init.d] done.
+[services.d] starting services
+/opt/bin/serf agent --join ha --replay --event-handler member-join=/serf-handlers/member-join.sh --event-handler member-leave,member-failed=/serf-handlers/member-leave.sh --tag role=balancer
+[services.d] done.
+==> Starting Serf agent...
+==> Starting Serf agent RPC...
+==> Serf agent running!
+         Node name: '05b54c3ffbf5'
+         Bind addr: '0.0.0.0:7946'
+                       RPC addr: '127.0.0.1:7373'
+                      Encrypted: false
+                       Snapshot: false
+                        Profile: lan
+    Message Compression Enabled: true
+==> Joining cluster...(replay: true)
+    Join completed. Synced with 1 initial agents
+
+==> Log data will now stream in as it occurs:
+
+    2020/12/27 15:23:23 [INFO] agent: Serf agent starting
+    2020/12/27 15:23:24 [INFO] serf: EventMemberJoin: 05b54c3ffbf5 192.168.42.2
+    2020/12/27 15:23:24 [INFO] agent: joining: [ha] replay: true
+    2020/12/27 15:23:24 [INFO] agent: joined: 1 nodes
+[WARNING] 361/152324 (206) : Server nodes/s1 is DOWN, reason: Layer4 connection problem, info: "Connection refused", check duration: 0ms. 1 active and 0 backup servers left. 0 sessions active, 0 requeued, 0 remaining in queue.
+[WARNING] 361/152325 (206) : Server nodes/s2 is DOWN, reason: Layer4 connection problem, info: "Connection refused", check duration: 0ms. 0 active and 0 backup servers left. 0 sessions active, 0 requeued, 0 remaining in queue.
+[NOTICE] 361/152325 (206) : haproxy version is 2.2.5-34b2b10
+[NOTICE] 361/152325 (206) : path to executable is /usr/local/sbin/haproxy
+[ALERT] 361/152325 (206) : backend 'nodes' has no server available!
+    2020/12/27 15:23:25 [INFO] agent: Received event: member-join
+    2020/12/27 15:24:26 [INFO] serf: EventMemberJoin: 962e8e9cdf90 192.168.42.3
+    2020/12/27 15:24:27 [INFO] agent: Received event: member-join
