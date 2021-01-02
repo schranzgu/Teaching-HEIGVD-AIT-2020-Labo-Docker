@@ -1,0 +1,5 @@
+PS C:\Users\guill\OneDrive\HEIG\2021\AIT\Labo\Labo05_Docker\Teaching-HEIGVD-AIT-2020-Labo-Docker> docker ps
+CONTAINER ID        IMAGE                                          COMMAND             CREATED             STATUS              PORTS                                                                                    NAMES
+628c51820cf3        teaching-heigvd-ait-2020-labo-docker_webapp1   "/init"             10 minutes ago      Up 4 minutes        7373/tcp, 7946/tcp, 0.0.0.0:4000->3000/tcp                                               s1
+6f073bc0fc3e        teaching-heigvd-ait-2020-labo-docker_webapp2   "/init"             10 minutes ago      Up 4 minutes        7373/tcp, 7946/tcp, 0.0.0.0:4001->3000/tcp                                               s2
+b0c919bdb3c9        teaching-heigvd-ait-2020-labo-docker_haproxy   "/init"             10 minutes ago      Up 10 minutes       0.0.0.0:80->80/tcp, 7373/tcp, 0.0.0.0:1936->1936/tcp, 0.0.0.0:9999->9999/tcp, 7946/tcp   ha
