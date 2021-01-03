@@ -161,7 +161,7 @@ Concernant les alternatives, on peut par exemple citer ZooKeeper, Fabric, Consul
 2. Provide the logs from the `ha` container gathered directly from the `/var/log/serf.log`
    file present in the container. Put the logs in the `logs` directory in your repo.
 
-Les logs pour cette partie se trouve à l'adresse suivante <https://github.com/schranzgu/Teaching-HEIGVD-AIT-2020-Labo-Docker/tree/master/logs/task%203>
+Les logs pour les questions 1 et 2 se trouvent à l'adresse suivante <https://github.com/schranzgu/Teaching-HEIGVD-AIT-2020-Labo-Docker/tree/master/logs/task3>
 
 
 
@@ -188,10 +188,18 @@ Les logs pour cette partie se trouve à l'adresse suivante <https://github.com/s
   ```
   RUN command 1 && command 2 && command 3
   ```
+  Il est important de souligner qu'à chaque fois que l'on utilise une commande comme RUN, ADD, COPY, le container va créer une nouvelle couche et donc une image d eplus en plus lourde. Tout faire en une seule ligne à l'avantage de réduire la multiplication des couches. De plus, dans le second exemple, si une commande ne fonctionne pas les suivantes ne sont pas exécutée. 
+
+
 
   There are also some articles about techniques to reduce the image
   size. Try to find them. They are talking about `squashing` or
   `flattening` images.
+
+  Voici deux articles relativement complets traitant de squashing et de flattening.
+  <https://blog.codacy.com/five-ways-to-slim-your-docker-images/>
+  <http://jasonwilder.com/blog/2014/08/19/squashing-docker-images/>
+  <https://tuhrig.de/flatten-a-docker-container-or-image/>
 
 2. Propose a different approach to architecture our images to be able
    to reuse as much as possible what we have done. Your proposition
@@ -206,6 +214,8 @@ Les logs pour cette partie se trouve à l'adresse suivante <https://github.com/s
    In addition, provide a log file containing the output of the 
    `docker ps` console and another file (per container) with
    `docker inspect <container>`. Four files are expected.
+
+   Les logs se trouvent à l'adresse suivante : <https://github.com/schranzgu/Teaching-HEIGVD-AIT-2020-Labo-Docker/tree/master/logs/task4>
    
 4. Based on the three output files you have collected, what can you
    say about the way we generate it? What is the problem if any?
