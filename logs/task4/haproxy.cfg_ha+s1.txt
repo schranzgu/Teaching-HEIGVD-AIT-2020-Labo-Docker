@@ -1,12 +1,2 @@
 # cat /tmp/haproxy.cfg
-Container 6bfa20148306 has joined the Serf cluster with the following IP address: 192.168.42.42
-
-
-
-# cat /tmp/haproxy.cfg
 Container 736f3d11546a has joined the Serf cluster with the following IP address: 192.168.42.11
-
-
-
-# cat /tmp/haproxy.cfg
-Container e4124b504132 has joined the Serf cluster with the following IP address: 192.168.42.22

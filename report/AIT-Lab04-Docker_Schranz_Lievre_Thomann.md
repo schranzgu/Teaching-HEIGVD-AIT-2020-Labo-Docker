@@ -188,7 +188,7 @@ Les logs pour les questions 1 et 2 se trouvent à l'adresse suivante <https://gi
   ```
   RUN command 1 && command 2 && command 3
   ```
-  Il est important de souligner qu'à chaque fois que l'on utilise une commande comme RUN, ADD, COPY, le container va créer une nouvelle couche et donc une image d eplus en plus lourde. Tout faire en une seule ligne à l'avantage de réduire la multiplication des couches. De plus, dans le second exemple, si une commande ne fonctionne pas les suivantes ne sont pas exécutée. 
+  Il est important de souligner qu'à chaque fois que l'on utilise une commande comme RUN, ADD, COPY, le container va créer une nouvelle couche et donc une image de plus en plus lourde. Tout faire en une seule ligne à l'avantage de réduire la multiplication des couches. De plus, dans le second exemple, si une commande ne fonctionne pas les suivantes ne sont pas exécutée. 
 
 
 
@@ -206,6 +206,8 @@ Les logs pour les questions 1 et 2 se trouvent à l'adresse suivante <https://gi
    should also try to avoid as much as possible repetitions between
    your images.
 
+   La principale amélioration à apporter, serait de créer une image avec tout ce qui est commun entre HA et Webapp. L'idée est de réunir tout ce qui est commun aux différentes images et de terminer avec ce qui est propre à chacune dans leur DockerFile respectifs. On ne build ainsi qu'une fois les parties communes.
+
 3. Provide the `/tmp/haproxy.cfg` file generated in the `ha` container
    after each step.  Place the output into the `logs` folder like you
    already did for the Docker logs in the previous tasks. Three files
@@ -219,6 +221,8 @@ Les logs pour les questions 1 et 2 se trouvent à l'adresse suivante <https://gi
    
 4. Based on the three output files you have collected, what can you
    say about the way we generate it? What is the problem if any?
+
+   Nous n'avons comme information que la dernière machine ayant rejoint le cluster. Les informations concernants le noeuds précédent et systématiquement effacée au profit du dernier ayant rejoint le cluster. 
 
 
 ### <a name="task-5"></a>Task 5: Generate a new load balancer configuration when membership changes
