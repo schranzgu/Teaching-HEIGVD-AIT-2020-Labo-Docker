@@ -5,25 +5,24 @@ Author  : Loïc Lièvre - Yanick Thomann - Guillaume Schranz
 Date    : Décembre 2021
 ```
 
-# Table of content
+### Table of content
 
 - [2020 HEIG-VD Administration IT](#2020-heig-vd-administration-it)
   - [Lab 04 : Docker](#lab-04--docker)
-- [Table of content](#table-of-content)
-    - [Pedagogical objectives](#pedagogical-objectives)
-    - [<a name="Introduction"></a>Introduction](#introduction)
-    - [<a name="task-0"></a>Task 0: Identify issues and install the tools](#task-0-identify-issues-and-install-the-tools)
-      - [Questions](#questions)
-    - [<a name="task-1"></a>Task 1: Add a process supervisor to run several processes](#task-1-add-a-process-supervisor-to-run-several-processes)
-    - [<a name="task-2"></a>Task 2: Add a tool to manage membership in the web server cluster](#task-2-add-a-tool-to-manage-membership-in-the-web-server-cluster)
-    - [<a name="task-3"></a>Task 3: React to membership changes](#task-3-react-to-membership-changes)
-    - [<a name="task-4"></a>Task 4: Use a template engine to easily generate configuration files](#task-4-use-a-template-engine-to-easily-generate-configuration-files)
-    - [<a name="task-5"></a>Task 5: Generate a new load balancer configuration when membership changes](#task-5-generate-a-new-load-balancer-configuration-when-membership-changes)
-    - [<a name="task-6"></a>Task 6: Make the load balancer automatically reload the new configuration](#task-6-make-the-load-balancer-automatically-reload-the-new-configuration)
-    - [<a name="Difficultes"></a>Difficultés](#difficultés)
-    - [<a name="Conclusion"></a>Conclusion](#conclusion)
+  - [Table of content](#table-of-content)
+  - [Pedagogical objectives](#pedagogical-objectives)
+  - [<a name="Introduction"></a>Introduction](#introduction)
+  - [<a name="task-0"></a>Task 0: Identify issues and install the tools](#task-0-identify-issues-and-install-the-tools)
+  - [<a name="task-1"></a>Task 1: Add a process supervisor to run several processes](#task-1-add-a-process-supervisor-to-run-several-processes)
+  - [<a name="task-2"></a>Task 2: Add a tool to manage membership in the web server cluster](#task-2-add-a-tool-to-manage-membership-in-the-web-server-cluster)
+  - [<a name="task-3"></a>Task 3: React to membership changes](#task-3-react-to-membership-changes)
+  - [<a name="task-4"></a>Task 4: Use a template engine to easily generate configuration files](#task-4-use-a-template-engine-to-easily-generate-configuration-files)
+  - [<a name="task-5"></a>Task 5: Generate a new load balancer configuration when membership changes](#task-5-generate-a-new-load-balancer-configuration-when-membership-changes)
+  - [<a name="task-6"></a>Task 6: Make the load balancer automatically reload the new configuration](#task-6-make-the-load-balancer-automatically-reload-the-new-configuration)
+  - [<a name="Difficultes"></a>Difficultés](#difficultés)
+  - [<a name="Conclusion"></a>Conclusion](#conclusion)
 
-### Pedagogical objectives
+### <a name="pedagogical-objectives"></a>Pedagogical objectives
 * Build your own Docker images
 
 * Become familiar with lightweight process supervision for Docker
@@ -31,6 +30,7 @@ Date    : Décembre 2021
 * Understand core concepts for dynamic scaling of an application in production
 
 * Put into practice decentralized management of web server instances
+
 
 ### <a name="Introduction"></a>Introduction
 Nous allons mettre en place une infrastructure dynamique basée sur des containers Docker. L'idée est de pouvoir réagir en cas de crash, augmentation de la charge ou moment plus calme afin d'optimiser notre infrastructure à chacune de ces situations. Nous allons utiliser en plus des outils comme S6, permettant de lancer plusieurs processus dans un docker, ainsi que serf permettant l'autodiscovery en containers. 
