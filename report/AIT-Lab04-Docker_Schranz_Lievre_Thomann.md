@@ -7,13 +7,21 @@ Date    : Décembre 2021
 
 # Table of content
 
-0. [Identify issues and install the tools](#task-0)
-1. [Add a process supervisor to run several processes](#task-1)
-2. [Add a tool to manage membership in the web server cluster](#task-2)
-3. [React to membership changes](#task-3)
-4. [Use a template engine to easily generate configuration files](#task-4)
-5. [Generate a new load balancer configuration when membership changes](#task-5)
-6. [Make the load balancer automatically reload the new configuration](#task-6)
+- [2020 HEIG-VD Administration IT](#2020-heig-vd-administration-it)
+  - [Lab 04 : Docker](#lab-04--docker)
+- [Table of content](#table-of-content)
+    - [Pedagogical objectives](#pedagogical-objectives)
+    - [<a name="Introduction"></a>Introduction](#introduction)
+    - [<a name="task-0"></a>Task 0: Identify issues and install the tools](#task-0-identify-issues-and-install-the-tools)
+      - [Questions](#questions)
+    - [<a name="task-1"></a>Task 1: Add a process supervisor to run several processes](#task-1-add-a-process-supervisor-to-run-several-processes)
+    - [<a name="task-2"></a>Task 2: Add a tool to manage membership in the web server cluster](#task-2-add-a-tool-to-manage-membership-in-the-web-server-cluster)
+    - [<a name="task-3"></a>Task 3: React to membership changes](#task-3-react-to-membership-changes)
+    - [<a name="task-4"></a>Task 4: Use a template engine to easily generate configuration files](#task-4-use-a-template-engine-to-easily-generate-configuration-files)
+    - [<a name="task-5"></a>Task 5: Generate a new load balancer configuration when membership changes](#task-5-generate-a-new-load-balancer-configuration-when-membership-changes)
+    - [<a name="task-6"></a>Task 6: Make the load balancer automatically reload the new configuration](#task-6-make-the-load-balancer-automatically-reload-the-new-configuration)
+    - [<a name="Difficultes"></a>Difficultés](#difficultés)
+    - [<a name="Conclusion"></a>Conclusion](#conclusion)
 
 ### Pedagogical objectives
 * Build your own Docker images
@@ -24,7 +32,8 @@ Date    : Décembre 2021
 
 * Put into practice decentralized management of web server instances
 
-# An introduction describing briefly the lab
+### <a name="Introduction"></a>Introduction
+Nous allons mettre en place une infrastructure dynamique basée sur des containers Docker. L'idée est de pouvoir réagir en cas de crash, augmentation de la charge ou moment plus calme afin d'optimiser notre infrastructure à chacune de ces situations. Nous allons utiliser en plus des outils comme S6, permettant de lancer plusieurs processus dans un docker, ainsi que serf permettant l'autodiscovery en containers. 
 
 ### <a name="task-0"></a>Task 0: Identify issues and install the tools
 Architecture initiale 
@@ -128,11 +137,11 @@ Architecture initiale
 ![HA_stat](assets/screenshot/1.1_HA_stats_page.png)
 
 2. Describe your difficulties for this task and your understanding of what is happening during this task. Explain in your own words why are we installing a process supervisor. Do not hesitate to do more research and to find more articles on that topic to illustrate the problem.
-
-N'avons pas rencontré de difficulté particulière durant cette tâche.
-Docker n'est pas fait pour avoir plusueurs process dans un seul container. De plus, par défaut le container va automatiquement s'arrêter lorsque le process se termine. Ainsi, si l'on prend Apache pour exemple qui va lancer des deamons en fond, l'arrêt du process principal va avoir pour conséquence de stopper les deamons également. Pour remédier à ce problème, il est possible d'utiliser un `init system` aussi appelé parfois `process supervisor`. Celui que nous avons utilisé s'appelle `s6`. Le but est d'utiliser s6 comme le process principal qui va à la fois tourner en permanance et qui  pourra lancer d'autres process. 
-Nous avons finalement crée un dossier `service` pour HA et WebApp afin d'y placer les scripts de lancement pour que s6 puisse s'en charger.
-
+   ___
+   N'avons pas rencontré de difficulté particulière durant cette tâche.
+   Docker n'est pas fait pour avoir plusieurs process dans un seul container. De plus, par défaut le container va automatiquement s'arrêter lorsque le process se termine. Ainsi, si l'on prend Apache pour exemple qui va lancer des deamons en fond, l'arrêt du process principal va avoir pour conséquence de stopper les deamons également. Pour remédier à ce problème, il est possible d'utiliser un `init system` aussi appelé parfois `process supervisor`. Celui que nous avons utilisé s'appelle `s6`. Le but est d'utiliser s6 comme le process principal qui va à la fois tourner en permanence  et qui pourra lancer d'autres process. 
+   Nous avons finalement créé un dossier `service` pour HA et WebApp afin d'y placer les scripts de lancement pour que s6 puisse s'en charger.
+   ___
 ### <a name="task-2"></a>Task 2: Add a tool to manage membership in the web server cluster
 
 **Deliverables**:
@@ -140,16 +149,16 @@ Nous avons finalement crée un dossier `service` pour HA et WebApp afin d'y plac
 1. Logs <https://github.com/schranzgu/Teaching-HEIGVD-AIT-2020-Labo-Docker/tree/master/logs/task2>
 
 2. Give the answer to the question about the existing problem with the current solution.
-   
-Le problème est la dépendance envers HA lors de la création de nouveau node. En effet, si HA n'est pas lancé, les autres ne pourrons fonctionner car il dépendent de HA. Ainsi, le but ici est de pouvoir démarrer d'autres noeuds et qu'ils rejoignent un cluster indépendament des autres noeuds existants. 
-Pour cela, nous utilisons un `cluster mambership management tool, Serf` (voir question suivante). Le but est que les nodes puissent communiquer entre eux directement. 
-
+   ___
+   Le problème est la dépendance envers HA lors de la création de nouveau node. En effet, si HA n'est pas lancé, les autres ne pourrons fonctionner car ils dépendent de HA. Ainsi, le but ici est de pouvoir démarrer d'autres noeuds et qu'ils rejoignent un cluster indépendamment des autres noeuds existants. 
+   Pour cela, nous utilisons un `cluster membership management tool, Serf` (voir question suivante). Le but est que les nodes puissent communiquer entre eux directement. 
+   ___
 3. Give an explanation on how `Serf` is working. Read the official website to get more details about the `GOSSIP` protocol used in `Serf`. Try to find other solutions that can be used to solve similar situations where we need some auto-discovery mechanism.
+   ___
+   L'idée ici est de créer un Cluster dans lequel les noeuds peuvent communiquer entre eux. Pour cela, tous les noeuds utilisent un agent Serf qui va se charger de créer ou de rejoindre un cluster. Pour communiquer, Serf utilise un Gossip protocal qui va broadcaster des messages au travers du cluster. Ainsi, tout le monde aura conscience des autres nodes existants ainsi que des ajouts ou suppressions de node. 
 
-L'idée ici est de créer un Cluster dans lequel les noeuds peuvent communiquer entre eux. Pour cela, tous les noeuds utilisent un agent Serf qui va se charger de créer ou de rejoindre un cluster. Pour communiquer, Serf utilise un Gossip protocal qui va broadcaster des messages au travers du cluster. Ainsi, tout le monde aura conscience des autres nodes existants ainsi que des ajouts ou suppressions de node. 
-
-Concernant les alternatives, on peut par exemple citer ZooKeeper, Fabric, Consul, .... A noter que Kubernetes permet également de traiter de ce type de problème.
-
+   Concernant les alternatives, on peut par exemple citer ZooKeeper, Fabric, Consul, .... A noter que Kubernetes permet également de traiter de ce type de problème.
+   ___
 
 ### <a name="task-3"></a>Task 3: React to membership changes
 
@@ -160,9 +169,9 @@ Concernant les alternatives, on peut par exemple citer ZooKeeper, Fabric, Consul
 
 2. Provide the logs from the `ha` container gathered directly from the `/var/log/serf.log`
    file present in the container. Put the logs in the `logs` directory in your repo.
-
-Les logs pour les questions 1 et 2 se trouvent à l'adresse suivante <https://github.com/schranzgu/Teaching-HEIGVD-AIT-2020-Labo-Docker/tree/master/logs/task3>
-
+   ___
+   Les logs pour les questions 1 et 2 se trouvent à l'adresse suivante <https://github.com/schranzgu/Teaching-HEIGVD-AIT-2020-Labo-Docker/tree/master/logs/task3>
+   ___
 
 
 
@@ -188,25 +197,29 @@ Les logs pour les questions 1 et 2 se trouvent à l'adresse suivante <https://gi
   ```
   RUN command 1 && command 2 && command 3
   ```
+  ___
   Il est important de souligner qu'à chaque fois que l'on utilise une commande comme RUN, ADD, COPY, le container va créer une nouvelle couche et donc une image de plus en plus lourde. Tout faire en une seule ligne à l'avantage de réduire la multiplication des couches. De plus, dans le second exemple, si une commande ne fonctionne pas les suivantes ne sont pas exécutée. 
-
+   ___
 
 
   There are also some articles about techniques to reduce the image
   size. Try to find them. They are talking about `squashing` or
   `flattening` images.
 
-  Voici deux articles relativement complets traitant de squashing et de flattening.
-  <https://blog.codacy.com/five-ways-to-slim-your-docker-images/>
-  <http://jasonwilder.com/blog/2014/08/19/squashing-docker-images/>
-  <https://tuhrig.de/flatten-a-docker-container-or-image/>
+   ___
+   Voici deux articles relativement complets traitant de squashing et de flattening.
+   <https://blog.codacy.com/five-ways-to-slim-your-docker-images/>
+   <http://jasonwilder.com/blog/2014/08/19/squashing-docker-images/>
+   <https://tuhrig.de/flatten-a-docker-container-or-image/>
+   ___
 
 2. Propose a different approach to architecture our images to be able
    to reuse as much as possible what we have done. Your proposition
    should also try to avoid as much as possible repetitions between
    your images.
-
+   ___
    La principale amélioration à apporter, serait de créer une image avec tout ce qui est commun entre HA et Webapp. L'idée est de réunir tout ce qui est commun aux différentes images et de terminer avec ce qui est propre à chacune dans leur DockerFile respectifs. On ne build ainsi qu'une fois les parties communes.
+   ___
 
 3. Provide the `/tmp/haproxy.cfg` file generated in the `ha` container
    after each step.  Place the output into the `logs` folder like you
@@ -217,13 +230,15 @@ Les logs pour les questions 1 et 2 se trouvent à l'adresse suivante <https://gi
    `docker ps` console and another file (per container) with
    `docker inspect <container>`. Four files are expected.
 
+   ___
    Les logs se trouvent à l'adresse suivante : <https://github.com/schranzgu/Teaching-HEIGVD-AIT-2020-Labo-Docker/tree/master/logs/task4>
-   
+   ___
+
 4. Based on the three output files you have collected, what can you
    say about the way we generate it? What is the problem if any?
-
-   Nous n'avons comme information que la dernière machine ayant rejoint le cluster. Les informations concernants le noeuds précédent et systématiquement effacée au profit du dernier ayant rejoint le cluster ce qui ne nous permet ni de réagir en cas d'arrêt, ni de journaliser les arrivées/départs. Finalement, on n'applique pas de filtre sur ce qui apparait ici et on ne fait pas distinction entre HA et webapp.
-
+   ___
+   Nous n'avons comme information que la dernière machine ayant rejoint le cluster. Les informations concernant le noeuds précédent et systématiquement effacée au profit du dernier ayant rejoint le cluster ce qui ne nous permet ni de réagir en cas d'arrêt, ni de journaliser les arrivées/départs. Finalement, on n'applique pas de filtre sur ce qui apparait ici et on ne fait pas distinction entre HA et webapp.
+   ___
 
 ### <a name="task-5"></a>Task 5: Generate a new load balancer configuration when membership changes
 
@@ -237,11 +252,15 @@ Les logs pour les questions 1 à 3 se trouvent à l'adresse suivante <https://gi
    `docker ps` console and another file (per container) with
    `docker inspect <container>`. Four files are expected.
 
+   ___
    Les logs se trouvent à l'adresse suivante <https://github.com/schranzgu/Teaching-HEIGVD-AIT-2020-Labo-Docker/tree/master/logs/task5/before%20s1%20stopped>
+   ___
 
 2. Provide the list of files from the `/nodes` folder inside the `ha` container.
    One file expected with the command output.
+   ___
    La sortie se trouve à l'adresse suivante <https://github.com/schranzgu/Teaching-HEIGVD-AIT-2020-Labo-Docker/blob/master/logs/task5/before%20s1%20stopped/nodes_ls_ha%2Bs1%2Bs2.txt> (dans le dossier du point précédent)
+   ___
 
 3. Provide the configuration file after you stopped one container and
    the list of nodes present in the `/nodes` folder. One file expected
@@ -250,19 +269,21 @@ Les logs pour les questions 1 à 3 se trouvent à l'adresse suivante <https://gi
     In addition, provide a log file containing the output of the 
    `docker ps` console. One file expected.
 
+   ___
    Les logs se trouvent à l'adresse suivante <https://github.com/schranzgu/Teaching-HEIGVD-AIT-2020-Labo-Docker/tree/master/logs/task5/after%20s1%20stopped>
+   ___
 
 4. (Optional:) Propose a different approach to manage the list of backend
    nodes. You do not need to implement it. You can also propose your
    own tools or the ones you discovered online. In that case, do not
    forget to cite your references.
    
-
+   ___
    Nous avons trouvé deux outils permettant de gérer la liste des backends. 
    
    * Swarm, directement intégré à Docker : <https://docs.docker.com/engine/swarm/>
-   * Kubernetes, plate-forme développée initiallement par Google pour automatiser le déploiement, la montée en charge et la mise en oeuvre de de contener sur des Cluster. A noter que ce n'est pas la fonction principale mais l'un des services offert par la solution. 
-
+   * Kubernetes, plate-forme développée initialement  par Google pour automatiser le déploiement, la montée en charge et la mise en oeuvre de contenair sur des Cluster. A noter que ce n'est pas la fonction principale mais l'un des services offerts par la solution. 
+   ___
 
 ### <a name="task-6"></a>Task 6: Make the load balancer automatically reload the new configuration
 
@@ -272,14 +293,14 @@ Deliverables:
 
    Also provide the output of docker ps in a log file. At least one file is expected. You can provide one output per step of your experimentation according to your screenshots.
 
-
+   ___
    Nous avons effectué les manipulations suivantes : 
    * Lancement de HA, S1 et S2
    * Ajout de S3
    * Arrêt de S1, S2 et S3
    * Lancement de S1
 
-   La commande `docker ps` suit cette logique. 
+   La commande `docker ps` suit cette logique. <https://github.com/schranzgu/Teaching-HEIGVD-AIT-2020-Labo-Docker/tree/master/logs/task6>
    ```bash
    PS C:\Users\guill> docker ps
    CONTAINER ID        IMAGE                                          COMMAND             CREATED             STATUS              PORTS                                                                                    NAMES
@@ -300,13 +321,47 @@ Deliverables:
    4cbd9ec9993a        teaching-heigvd-ait-2020-labo-docker_haproxy   "/init"             2 days ago          Up About an hour    0.0.0.0:80->80/tcp, 7373/tcp, 0.0.0.0:1936->1936/tcp, 0.0.0.0:9999->9999/tcp, 7946/tcp   ha
    f316b833528e        teaching-heigvd-ait-2020-labo-docker_webapp1   "/init"             2 days ago          Up 7 seconds        7373/tcp, 7946/tcp, 0.0.0.0:4000->3000/tcp                                               s1
    ```
+   Dans l'ordre, les captures d'écran de la page de stat de HA.
 
+   ![Stat HA](assets/screenshot/stat_HA_S1-2.png)
+   ![Stat HA](assets/screenshot/stat_HA_S1-2-3png.png)
+   ![Stat HA](assets/screenshot/stat_HA.png)
+   ![Stat HA](assets/screenshot/stat_HA_S1.png)
+
+   Les 3 applis répondent correctement à tour de rôle lorsqu'elles sont les 3 actives.
+
+   ![srv response](assets/screenshot/s1-2-3_response_s1.png)
+   ![srv response](assets/screenshot/s1-2-3_response_s2.png)
+   ![srv response](assets/screenshot/s1-2-3_response_s3.png)
+
+   Tout comme S1 seul. A noter que l'on voit le nombre de session augmenter dans ce cas (pas d'implémentation des cookies)
+
+   ![srv response](assets/screenshot/HA+S1.png)
+
+   Finalement, personne ne répond lorsque HA est seul
+   ![srv response](assets/screenshot/onlyHA.png)
+   ___
 
    Give your own feelings about the final solution. Propose improvements or ways to do the things differently. If any, provide references to your readings for the improvements.
+   ___
+   * Cette solution est intéressante. D'après nous, le plus gros défaut est que nous avons ici une infrastructure dynamique en termes de backend mais le front reste un single point of failure. Nous devrions rajouter de la redondance à ce niveau-là. 
 
-   (Optional:) Present a live demo where you add and remove a backend container.
+   * Il faudrait intégrer la totalité du laboratoire précédent à celui-ci pour avoir une architecture d'avantage fonctionnelle. 
+
+   * Néanmoins, la solution que nous avons permet de se rendre compte des difficultés et des points d'attention lors de la mise en place d'une infra de ce type là.
+   ___
 
 
-# A chapter named "Difficulties" where you describe the problems you have encountered and the solutions you found
 
-# A conclusion
+### <a name="Difficultes"></a>Difficultés
+___
+Nous avons rencontrés principalement trois difficultés. 
+* il y a plusieurs erreurs dans la consigne. Bien qu'après réflexion cela ne pose pas de problème, nous avons perdu du temps ne sachant pas si le problème venait de nous, de notre infra, de notre OS, ... 
+* Nous avons utilisé des machines Windows et avons rencontrés le problème cité en fin de consigne. 
+* Nous n'arrivions pas à lancer les conteneurs séparément. Finalement, nous utilisions docker-compose avant d'arrêter puis de relancer les containers depuis l'interface de Docker. 
+___
+
+### <a name="Conclusion"></a>Conclusion
+___
+Ce laboratoire était très constructif. Jusqu'à présent, nous utilisions Docker sans vraiment savoir ce que nous faisions. Ce dernier permet à la fois de comprendre comment l'utiliser correctement mais également de nous montrer ce que représente le défi de mettre en place une infrastructure plus complexe que ce dont nous avions l'habitude. 
+___
