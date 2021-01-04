@@ -222,13 +222,14 @@ Les logs pour les questions 1 et 2 se trouvent à l'adresse suivante <https://gi
 4. Based on the three output files you have collected, what can you
    say about the way we generate it? What is the problem if any?
 
-   Nous n'avons comme information que la dernière machine ayant rejoint le cluster. Les informations concernants le noeuds précédent et systématiquement effacée au profit du dernier ayant rejoint le cluster. 
+   Nous n'avons comme information que la dernière machine ayant rejoint le cluster. Les informations concernants le noeuds précédent et systématiquement effacée au profit du dernier ayant rejoint le cluster ce qui ne nous permet ni de réagir en cas d'arrêt, ni de journaliser les arrivées/départs. Finalement, on n'applique pas de filtre sur ce qui apparait ici et on ne fait pas distinction entre HA et webapp.
 
 
 ### <a name="task-5"></a>Task 5: Generate a new load balancer configuration when membership changes
 
 **Deliverables**:
 
+Les logs pour les questions 1 à 3 se trouvent à l'adresse suivante <https://github.com/schranzgu/Teaching-HEIGVD-AIT-2020-Labo-Docker/tree/master/logs/task5>
 1. Provide the file `/usr/local/etc/haproxy/haproxy.cfg` generated in
    the `ha` container after each step. Three files are expected.
    
@@ -236,8 +237,11 @@ Les logs pour les questions 1 et 2 se trouvent à l'adresse suivante <https://gi
    `docker ps` console and another file (per container) with
    `docker inspect <container>`. Four files are expected.
 
+   Les logs se trouvent à l'adresse suivante <https://github.com/schranzgu/Teaching-HEIGVD-AIT-2020-Labo-Docker/tree/master/logs/task5/before%20s1%20stopped>
+
 2. Provide the list of files from the `/nodes` folder inside the `ha` container.
    One file expected with the command output.
+   La sortie se trouve à l'adresse suivante <https://github.com/schranzgu/Teaching-HEIGVD-AIT-2020-Labo-Docker/blob/master/logs/task5/before%20s1%20stopped/nodes_ls_ha%2Bs1%2Bs2.txt> (dans le dossier du point précédent)
 
 3. Provide the configuration file after you stopped one container and
    the list of nodes present in the `/nodes` folder. One file expected
@@ -246,22 +250,61 @@ Les logs pour les questions 1 et 2 se trouvent à l'adresse suivante <https://gi
     In addition, provide a log file containing the output of the 
    `docker ps` console. One file expected.
 
+   Les logs se trouvent à l'adresse suivante <https://github.com/schranzgu/Teaching-HEIGVD-AIT-2020-Labo-Docker/tree/master/logs/task5/after%20s1%20stopped>
+
 4. (Optional:) Propose a different approach to manage the list of backend
    nodes. You do not need to implement it. You can also propose your
    own tools or the ones you discovered online. In that case, do not
    forget to cite your references.
+   
+
+   Nous avons trouvé deux outils permettant de gérer la liste des backends. 
+   
+   * Swarm, directement intégré à Docker : <https://docs.docker.com/engine/swarm/>
+   * Kubernetes, plate-forme développée initiallement par Google pour automatiser le déploiement, la montée en charge et la mise en oeuvre de de contener sur des Cluster. A noter que ce n'est pas la fonction principale mais l'un des services offert par la solution. 
+
 
 ### <a name="task-6"></a>Task 6: Make the load balancer automatically reload the new configuration
 
 Deliverables:
 
-    Take a screenshots of the HAProxy stat page showing more than 2 web applications running. Additional screenshots are welcome to see a sequence of experimentations like shutting down a node and starting more nodes.
+   Take a screenshots of the HAProxy stat page showing more than 2 web applications running. Additional screenshots are welcome to see a sequence of experimentations like shutting down a node and starting more nodes.
 
-    Also provide the output of docker ps in a log file. At least one file is expected. You can provide one output per step of your experimentation according to your screenshots.
+   Also provide the output of docker ps in a log file. At least one file is expected. You can provide one output per step of your experimentation according to your screenshots.
 
-    Give your own feelings about the final solution. Propose improvements or ways to do the things differently. If any, provide references to your readings for the improvements.
 
-    (Optional:) Present a live demo where you add and remove a backend container.
+   Nous avons effectué les manipulations suivantes : 
+   * Lancement de HA, S1 et S2
+   * Ajout de S3
+   * Arrêt de S1, S2 et S3
+   * Lancement de S1
+
+   La commande `docker ps` suit cette logique. 
+   ```bash
+   PS C:\Users\guill> docker ps
+   CONTAINER ID        IMAGE                                          COMMAND             CREATED             STATUS              PORTS                                                                                    NAMES
+   da2b37e08f39        teaching-heigvd-ait-2020-labo-docker_webapp2   "/init"             2 days ago          Up 5 minutes        7373/tcp, 7946/tcp, 0.0.0.0:4001->3000/tcp                                               s2
+   4cbd9ec9993a        teaching-heigvd-ait-2020-labo-docker_haproxy   "/init"             2 days ago          Up 5 minutes        0.0.0.0:80->80/tcp, 7373/tcp, 0.0.0.0:1936->1936/tcp, 0.0.0.0:9999->9999/tcp, 7946/tcp   ha
+   f316b833528e        teaching-heigvd-ait-2020-labo-docker_webapp1   "/init"             2 days ago          Up 5 minutes        7373/tcp, 7946/tcp, 0.0.0.0:4000->3000/tcp                                               s1
+   PS C:\Users\guill> docker ps
+   CONTAINER ID        IMAGE                                          COMMAND             CREATED             STATUS              PORTS                                                                                    NAMES
+   c5ab5f32ae93        s1                                             "/init"             17 seconds ago      Up 16 seconds       3000/tcp, 7373/tcp, 7946/tcp                                                             s3
+   da2b37e08f39        teaching-heigvd-ait-2020-labo-docker_webapp2   "/init"             2 days ago          Up About an hour    7373/tcp, 7946/tcp, 0.0.0.0:4001->3000/tcp                                               s2
+   4cbd9ec9993a        teaching-heigvd-ait-2020-labo-docker_haproxy   "/init"             2 days ago          Up About an hour    0.0.0.0:80->80/tcp, 7373/tcp, 0.0.0.0:1936->1936/tcp, 0.0.0.0:9999->9999/tcp, 7946/tcp   ha
+   f316b833528e        teaching-heigvd-ait-2020-labo-docker_webapp1   "/init"             2 days ago          Up About an hour    7373/tcp, 7946/tcp, 0.0.0.0:4000->3000/tcp                                               s1
+   PS C:\Users\guill> docker ps
+   CONTAINER ID        IMAGE                                          COMMAND             CREATED             STATUS              PORTS                                                                                    NAMES
+   4cbd9ec9993a        teaching-heigvd-ait-2020-labo-docker_haproxy   "/init"             2 days ago          Up About an hour    0.0.0.0:80->80/tcp, 7373/tcp, 0.0.0.0:1936->1936/tcp, 0.0.0.0:9999->9999/tcp, 7946/tcp   ha
+   PS C:\Users\guill> docker ps
+   CONTAINER ID        IMAGE                                          COMMAND             CREATED             STATUS              PORTS                                                                                    NAMES
+   4cbd9ec9993a        teaching-heigvd-ait-2020-labo-docker_haproxy   "/init"             2 days ago          Up About an hour    0.0.0.0:80->80/tcp, 7373/tcp, 0.0.0.0:1936->1936/tcp, 0.0.0.0:9999->9999/tcp, 7946/tcp   ha
+   f316b833528e        teaching-heigvd-ait-2020-labo-docker_webapp1   "/init"             2 days ago          Up 7 seconds        7373/tcp, 7946/tcp, 0.0.0.0:4000->3000/tcp                                               s1
+   ```
+
+
+   Give your own feelings about the final solution. Propose improvements or ways to do the things differently. If any, provide references to your readings for the improvements.
+
+   (Optional:) Present a live demo where you add and remove a backend container.
 
 
 # A chapter named "Difficulties" where you describe the problems you have encountered and the solutions you found

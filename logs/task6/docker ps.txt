@@ -1,0 +1,18 @@
+PS C:\Users\guill> docker ps
+CONTAINER ID        IMAGE                                          COMMAND             CREATED             STATUS              PORTS                                                                                    NAMES
+da2b37e08f39        teaching-heigvd-ait-2020-labo-docker_webapp2   "/init"             2 days ago          Up 5 minutes        7373/tcp, 7946/tcp, 0.0.0.0:4001->3000/tcp                                               s2
+4cbd9ec9993a        teaching-heigvd-ait-2020-labo-docker_haproxy   "/init"             2 days ago          Up 5 minutes        0.0.0.0:80->80/tcp, 7373/tcp, 0.0.0.0:1936->1936/tcp, 0.0.0.0:9999->9999/tcp, 7946/tcp   ha
+f316b833528e        teaching-heigvd-ait-2020-labo-docker_webapp1   "/init"             2 days ago          Up 5 minutes        7373/tcp, 7946/tcp, 0.0.0.0:4000->3000/tcp                                               s1
+PS C:\Users\guill> docker ps
+CONTAINER ID        IMAGE                                          COMMAND             CREATED             STATUS              PORTS                                                                                    NAMES
+c5ab5f32ae93        s1                                             "/init"             17 seconds ago      Up 16 seconds       3000/tcp, 7373/tcp, 7946/tcp                                                             s3
+da2b37e08f39        teaching-heigvd-ait-2020-labo-docker_webapp2   "/init"             2 days ago          Up About an hour    7373/tcp, 7946/tcp, 0.0.0.0:4001->3000/tcp                                               s2
+4cbd9ec9993a        teaching-heigvd-ait-2020-labo-docker_haproxy   "/init"             2 days ago          Up About an hour    0.0.0.0:80->80/tcp, 7373/tcp, 0.0.0.0:1936->1936/tcp, 0.0.0.0:9999->9999/tcp, 7946/tcp   ha
+f316b833528e        teaching-heigvd-ait-2020-labo-docker_webapp1   "/init"             2 days ago          Up About an hour    7373/tcp, 7946/tcp, 0.0.0.0:4000->3000/tcp                                               s1
+PS C:\Users\guill> docker ps
+CONTAINER ID        IMAGE                                          COMMAND             CREATED             STATUS              PORTS                                                                                    NAMES
+4cbd9ec9993a        teaching-heigvd-ait-2020-labo-docker_haproxy   "/init"             2 days ago          Up About an hour    0.0.0.0:80->80/tcp, 7373/tcp, 0.0.0.0:1936->1936/tcp, 0.0.0.0:9999->9999/tcp, 7946/tcp   ha
+PS C:\Users\guill> docker ps
+CONTAINER ID        IMAGE                                          COMMAND             CREATED             STATUS              PORTS                                                                                    NAMES
+4cbd9ec9993a        teaching-heigvd-ait-2020-labo-docker_haproxy   "/init"             2 days ago          Up About an hour    0.0.0.0:80->80/tcp, 7373/tcp, 0.0.0.0:1936->1936/tcp, 0.0.0.0:9999->9999/tcp, 7946/tcp   ha
+f316b833528e        teaching-heigvd-ait-2020-labo-docker_webapp1   "/init"             2 days ago          Up 7 seconds        7373/tcp, 7946/tcp, 0.0.0.0:4000->3000/tcp                                               s1
