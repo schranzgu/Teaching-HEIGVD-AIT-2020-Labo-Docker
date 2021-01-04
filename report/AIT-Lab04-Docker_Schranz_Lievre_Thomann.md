@@ -19,7 +19,7 @@ Date    : Décembre 2021
   - [Task 4: Use a template engine to easily generate configuration files](#task-4)
   - [Task 5: Generate a new load balancer configuration when membership changes](#task-5)
   - [Task 6: Make the load balancer automatically reload the new configuration](#task-6)
-  - [Difficultes"></a>Difficultés](#difficultes)
+  - [Difficultés](#difficultes)
   - [Conclusion](#conclusion)
 
 ### <a name="pedagogical-objectives"></a>Pedagogical objectives
@@ -33,6 +33,8 @@ Date    : Décembre 2021
 
 
 ### <a name="introduction"></a>Introduction
+Il est fortement recommandé de lire le rapport directement sur le repo github : <https://github.com/schranzgu/Teaching-HEIGVD-AIT-2020-Labo-Docker>
+
 Nous allons mettre en place une infrastructure dynamique basée sur des containers Docker. L'idée est de pouvoir réagir en cas de crash, augmentation de la charge ou moment plus calme afin d'optimiser notre infrastructure à chacune de ces situations. Nous allons utiliser en plus des outils comme S6, permettant de lancer plusieurs processus dans un docker, ainsi que serf permettant l'autodiscovery en containers. 
 
 ### <a name="task-0"></a>Task 0: Identify issues and install the tools
