@@ -11,16 +11,16 @@ Date    : Décembre 2021
   - [Lab 04 : Docker](#lab-04--docker)
   - [Table of content](#table-of-content)
   - [Pedagogical objectives](#pedagogical-objectives)
-  - [<a name="Introduction"></a>Introduction](#introduction)
-  - [<a name="task-0"></a>Task 0: Identify issues and install the tools](#task-0-identify-issues-and-install-the-tools)
-  - [<a name="task-1"></a>Task 1: Add a process supervisor to run several processes](#task-1-add-a-process-supervisor-to-run-several-processes)
-  - [<a name="task-2"></a>Task 2: Add a tool to manage membership in the web server cluster](#task-2-add-a-tool-to-manage-membership-in-the-web-server-cluster)
-  - [<a name="task-3"></a>Task 3: React to membership changes](#task-3-react-to-membership-changes)
-  - [<a name="task-4"></a>Task 4: Use a template engine to easily generate configuration files](#task-4-use-a-template-engine-to-easily-generate-configuration-files)
-  - [<a name="task-5"></a>Task 5: Generate a new load balancer configuration when membership changes](#task-5-generate-a-new-load-balancer-configuration-when-membership-changes)
-  - [<a name="task-6"></a>Task 6: Make the load balancer automatically reload the new configuration](#task-6-make-the-load-balancer-automatically-reload-the-new-configuration)
-  - [<a name="Difficultes"></a>Difficultés](#difficultés)
-  - [<a name="Conclusion"></a>Conclusion](#conclusion)
+  - [Introduction](#introduction)
+  - [Task 0: Identify issues and install the tools](#task-0)
+  - [Task 1: Add a process supervisor to run several processes](#task-1)
+  - [Task 2: Add a tool to manage membership in the web server cluster](#task-2)
+  - [Task 3: React to membership changes](#task-3)
+  - [Task 4: Use a template engine to easily generate configuration files](#task-4)
+  - [Task 5: Generate a new load balancer configuration when membership changes](#task-5)
+  - [Task 6: Make the load balancer automatically reload the new configuration](#task-6)
+  - [Difficultes"></a>Difficultés](#difficultes)
+  - [Conclusion](#conclusion)
 
 ### <a name="pedagogical-objectives"></a>Pedagogical objectives
 * Build your own Docker images
@@ -32,7 +32,7 @@ Date    : Décembre 2021
 * Put into practice decentralized management of web server instances
 
 
-### <a name="Introduction"></a>Introduction
+### <a name="introduction"></a>Introduction
 Nous allons mettre en place une infrastructure dynamique basée sur des containers Docker. L'idée est de pouvoir réagir en cas de crash, augmentation de la charge ou moment plus calme afin d'optimiser notre infrastructure à chacune de ces situations. Nous allons utiliser en plus des outils comme S6, permettant de lancer plusieurs processus dans un docker, ainsi que serf permettant l'autodiscovery en containers. 
 
 ### <a name="task-0"></a>Task 0: Identify issues and install the tools
@@ -353,7 +353,7 @@ Deliverables:
 
 
 
-### <a name="Difficultes"></a>Difficultés
+### <a name="difficultes"></a>Difficultés
 ___
 Nous avons rencontrés principalement trois difficultés. 
 * il y a plusieurs erreurs dans la consigne. Bien qu'après réflexion cela ne pose pas de problème, nous avons perdu du temps ne sachant pas si le problème venait de nous, de notre infra, de notre OS, ... 
@@ -361,7 +361,7 @@ Nous avons rencontrés principalement trois difficultés.
 * Nous n'arrivions pas à lancer les conteneurs séparément. Finalement, nous utilisions docker-compose avant d'arrêter puis de relancer les containers depuis l'interface de Docker. 
 ___
 
-### <a name="Conclusion"></a>Conclusion
+### <a name="conclusion"></a>Conclusion
 ___
 Ce laboratoire était très constructif. Jusqu'à présent, nous utilisions Docker sans vraiment savoir ce que nous faisions. Ce dernier permet à la fois de comprendre comment l'utiliser correctement mais également de nous montrer ce que représente le défi de mettre en place une infrastructure plus complexe que ce dont nous avions l'habitude. 
 ___
